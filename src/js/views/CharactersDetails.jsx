@@ -1,15 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Context } from "../store/appContext";
+import { extract } from "query-string";
 
 
 export const CharactersDetails = () => {
     const {store, actions } = useContext(Context);
-    const {characterDetails} = store;
+    const {characterDetails, planetDetails} = store;
+    const [planets, setPlanets] = useState([]);
     const params = useParams(); 
     const id = params.id;
 
-   
+
     const handleOnError = (e) => {
         e.target.src = "https://starwars-visualguide.com/assets/img/placeholder.jpg"
     }
@@ -29,6 +31,9 @@ export const CharactersDetails = () => {
                                 <li className="list-group-item">Pelo: {characterDetails.hair_color}</li>
                                 <li className="list-group-item">Ojos: {characterDetails.eye_color}</li>
                                 <li className="list-group-item">Genero: {characterDetails.gender}</li>
+                                <li className="list-group-item">Homeworld: {planetDetails.name}</li>
+                                
+                                
                             </ul>
                         </div>
                     </div>
