@@ -5,6 +5,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			title: "Star Wars",
 			characters: [],
 			films:[],
+			filmsDetails:[],
 			characterDetails:{},
 			section:[],
 			planets:[],
@@ -25,7 +26,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			deleteFav: (item, array) => {
-				setStore({favorites: array.filter((element) => element != item)})
+				if (array) {
+					setStore({favorites: array.filter((element) => element !== item)})
+				}
 			},
 
 			getSections: async () => {
@@ -46,6 +49,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log(data);
 				setStore( { sections: data} )
 			},
+			
 			getCharacters: async () => {
 				const url = "https://www.swapi.tech/api/people";
 				const options = {
@@ -148,6 +152,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log(data.result.properties);
 				setStore( {characterDetails:data.result.properties} )
 			},
+			
+			getFilmsDetails: async (id) => {
+				const url = `https://www.swapi.tech/api/films/${id}`;
+				const options = {
+					method:"GET",
+					
+					
+				};
+				const response = await fetch(url, options);
+				if (response.ok) {
+					console.log('Aqui estan los detalles de las peliculas');
+				} else {
+					console.error('Error en los detalles')
+				}
+				const data = await response.json()
+				console.log(data.result.properties);
+				setStore( {filmsDetails:data.result.properties})
+			},
+			
 			getPlanets: async () => {
 				const url = "https://www.swapi.tech/api/planets";
 				const options = {
@@ -166,7 +189,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log(data);
 				setStore( {planets:data.results} )
 			},
-
+			
 			getFilms: async () => {
 				const url = "https://www.swapi.tech/api/films";
 				const options = {
